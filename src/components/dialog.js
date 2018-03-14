@@ -1,8 +1,10 @@
 define([
     '../lib/knockout-base',
+    '../lib/viewModelBase',
     'kb_common/html'
 ], function(
-    ko,
+    koBase,
+    ViewModelBase,
     html
 ) {
     'use strict';
@@ -11,20 +13,23 @@ define([
         div = t('div'),
         button = t('button');
 
-    function viewModel(params) {
-        function doClose() {
-            params.onClose();
-        }
-        return {
-            title: params.title,
-            body: params.body,
-            buttons: [
+    class DialogViewModel extends ViewModelBase {
+        constructor(params) {
+            super();
+
+            this.title = params.title;
+            this.body = params.body;
+            this.buttons = [
                 {
                     title: 'Close',
-                    action: doClose
+                    action: this.doClose
                 }
-            ]
-        };
+            ];
+        }
+
+        doClose() {
+            this.params.onClose();
+        }
     }
 
     function template() {
@@ -81,10 +86,10 @@ define([
 
     function component() {
         return {
-            viewModel: viewModel,
+            viewModel: DialogViewModel,
             template: template()
         };
     }
 
-    return ko.kb.registerComponent(component);
+    return koBase.registerComponent(component);
 });

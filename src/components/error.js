@@ -3,7 +3,7 @@ define([
     'kb_common/html',
     'kb_common/bootstrapUtils'
 ], function (
-    ko,
+    KO,
     html,
     BS
 ) {
@@ -48,7 +48,7 @@ define([
 
     function viewModel(params) {
         var infoHtml;
-        var info = ko.unwrap(params.info);
+        var info = KO.ko.unwrap(params.info);
         if (info === undefined) {
             infoHtml = null;
         } else {
@@ -166,5 +166,5 @@ define([
         };
     }
 
-    return ko.kb.registerComponent(component);
+    return KO.registerComponent(component);
 });

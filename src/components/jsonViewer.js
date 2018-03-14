@@ -4,7 +4,7 @@ define([
     'numeral',
     'css!./jsonViewer.css'
 ], function (
-    ko,
+    KO,
     html,
     numeral
 ) {
@@ -61,7 +61,7 @@ define([
                 return {
                     type: 'array',
                     key: key,
-                    show: ko.observable(forceOpen || false),
+                    show: KO.ko.observable(forceOpen || false),
                     value: obj.map(function (element) {
                         // return makeBrowsable(element);
                         return element;
@@ -70,7 +70,7 @@ define([
             } else {
                 return {
                     type: 'object',
-                    show: ko.observable(forceOpen || false),
+                    show: KO.ko.observable(forceOpen || false),
                     key: key,
                     value: Object.keys(obj).map(function (key) {
                         return {
@@ -428,5 +428,5 @@ define([
         };
     }
 
-    return ko.kb.registerComponent(component);
+    return KO.registerComponent(component);
 });

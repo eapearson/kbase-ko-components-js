@@ -3,7 +3,7 @@ define([
     'kb_common/html',
     '../lib/clock'
 ], function(
-    ko,
+    KO,
     html,
     Clock
 ) {
@@ -96,20 +96,20 @@ define([
     }
 
     function viewModel(params) {
-        var startTime = ko.utils.unwrapObservable(params.startTime);
+        var startTime = KO.ko.utils.unwrapObservable(params.startTime);
         if (startTime instanceof Date) {
             startTime = startTime.getTime();
         }
         // var startTime = .getTime();
 
         // var currentTime = ko.observable(new Date().getTime());
-        var currentTime = ko.observable((new Date()).getTime());
+        var currentTime = KO.ko.observable((new Date()).getTime());
 
         var listener = Clock.globalClock.listen(function () {
             currentTime((new Date()).getTime());
         }, params.updateInterval || 1);
 
-        var elapsed = ko.pureComputed(function () {
+        var elapsed = KO.ko.pureComputed(function () {
             if (startTime) {
                 var e =  currentTime() - startTime;
                 return niceDuration(e);
@@ -147,5 +147,5 @@ define([
         };
     }
 
-    return ko.kb.registerComponent(component);
+    return KO.registerComponent(component);
 });

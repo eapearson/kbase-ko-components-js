@@ -11,7 +11,7 @@ define([
     'kb_common/html',
     '../lib/nanoBus',
 ], function (
-    ko,
+    KO,
     html,
     NanoBus
 ) {
@@ -22,9 +22,9 @@ define([
         div = t('div');
 
     function viewModel(params) {
-        var showPanel = ko.observable();
+        var showPanel = KO.ko.observable();
 
-        var subscriptions = ko.kb.SubscriptionManager.make();
+        var subscriptions = new KO.SubscriptionManager;
 
         var bus = NanoBus.make();
 

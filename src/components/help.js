@@ -1,8 +1,10 @@
 define([
     '../lib/knockout-base',
+    '../lib/subscriptionManager',
     'kb_common/html'
 ], function (
-    ko,
+    KO,
+    SubscriptionManager,
     html
 ) {
     'use strict';
@@ -15,16 +17,16 @@ define([
     function viewModel(params) {
         var helpDb = params.helpDb;
 
-        var subscriptions = ko.kb.SubscriptionManager.make();
+        var subscriptions = new SubscriptionManager();
 
         var topicsIndex = {};
         helpDb.topics.forEach(function (topic) {
             topicsIndex[topic.id] = topic;
         });
 
-        var currentTopicId = ko.observable();
+        var currentTopicId = KO.ko.observable();
 
-        var currentTopic = ko.observable();
+        var currentTopic = KO.ko.observable();
 
         subscriptions.add(currentTopicId.subscribe(function () {
             currentTopic(topicsIndex[currentTopicId()]);
@@ -258,5 +260,5 @@ define([
             template: template()
         };
     }
-    return ko.kb.registerComponent(component);
+    return KO.registerComponent(component);
 });

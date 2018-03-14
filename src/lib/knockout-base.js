@@ -6,7 +6,6 @@ define([
     'marked',
     'kb_common/utils',
     'kb_common/html',
-    './subscriptionManager',
 
     'knockout-mapping',
     'knockout-arraytransforms',
@@ -20,8 +19,7 @@ define([
     Uuid,
     marked,
     Utils,
-    html,
-    SubscriptionManager
+    html
 ) {
     // Knockout Defaults
     ko.options.deferUpdates = true;
@@ -531,16 +529,12 @@ define([
             '<!-- /ko -->'
         ];
     }
-
-    ko.kb = {};
-
-    ko.kb.komponent = komponent;
-    ko.kb.createRootComponent = createRootComponent;
-    ko.kb.registerComponent = registerComponent;
-    // the subscription manager is a factory.
-    // TODO: better way of integrating into knockout...
-    ko.kb.SubscriptionManager = SubscriptionManager;
-    ko.kb.pluralize = pluralize;
-
-    return ko;
+   
+    return {
+        komponent,
+        createRootComponent,
+        registerComponent,
+        pluralize,
+        ko
+    };
 });
