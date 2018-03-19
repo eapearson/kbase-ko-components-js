@@ -9,7 +9,7 @@ define([
 
     'knockout-mapping',
     'knockout-arraytransforms',
-    './knockout-es6-collections',
+    './lib/knockout-es6-collections',
     'knockout-validation',
     'knockout-switch-case'
 ], function (
