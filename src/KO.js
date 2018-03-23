@@ -222,7 +222,7 @@ define([
     // BINDINGS
 
     ko.bindingHandlers.htmlMarkdown = {
-        update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        update: function (element, valueAccessor) {
             var markdown = marked(valueAccessor());
             element.innerHTML = markdown;
         }
@@ -437,7 +437,7 @@ define([
             }).join(',') + '}}--><!-- /ko -->';
     }
 
-    function createRootComponent(runtime, name) {
+    function createRootComponent(runtime, name, params) {
         var vm = {
             runtime: runtime,
             running: ko.observable(false)
@@ -454,7 +454,8 @@ define([
             komponent({
                 name: name,
                 params: {
-                    runtime: 'runtime'
+                    runtime: 'runtime',
+                    initialParams: params
                 }
             }),
             '<!-- /ko -->'
@@ -502,7 +503,28 @@ define([
     function registerComponent(componentFactory) {
         var name = new Uuid(4).format();
         var component = componentFactory();
-        ko.components.register(name, component);
+
+        // wrap the view modei in a view model factory so we can always
+        // pass the context with no fuss...
+        // Note implies the view model is a class, not factory.
+
+        let componentToRegister;
+        if (component.viewModelWithContext) {
+            let viewModelFactory = function(params, componentInfo) {
+                let context = ko.contextFor(componentInfo.element);
+                return new component.viewModelWithContext(params, context);
+            };
+            componentToRegister = {
+                viewModel: {
+                    createViewModel: viewModelFactory
+                },
+                template: component.template
+            };
+        } else {
+            componentToRegister = component;
+        }
+
+        ko.components.register(name, componentToRegister);
 
         if (component.stylesheet) {
             installStylesheet(name, component.stylesheet);
