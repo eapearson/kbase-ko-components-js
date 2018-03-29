@@ -1,3 +1,4 @@
+/*eslint no-console: ["error", {allow: ["error", "warn", "log"]}]*/
 define([
     'knockout',
     'numeral',
