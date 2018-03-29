@@ -7,11 +7,17 @@ it offers a close function for the sub-component to use, in addition to invoking
 from a built-in close button (?)
 */
 define([
-    '../lib/knockout-base',
+    'knockout',
+    '../KO',
+    '../lib/viewModelBase',
+    '../lib/subscriptionManager',
     'kb_common/html',
     '../lib/nanoBus',
 ], function (
     ko,
+    KO,
+    ViewModelBase,
+    subscriptionManager,
     html,
     NanoBus
 ) {
@@ -24,9 +30,9 @@ define([
     function viewModel(params) {
         var showPanel = ko.observable();
 
-        var subscriptions = ko.kb.SubscriptionManager.make();
+        var subscriptions = new subscriptionManager();
 
-        var bus = NanoBus.make();
+        var bus = new NanoBus();
 
         var openMessage = null;
         bus.on('close', function (message) {
@@ -320,5 +326,5 @@ define([
         };
     }
 
-    return ko.kb.registerComponent(component);
+    return KO.registerComponent(component);
 });

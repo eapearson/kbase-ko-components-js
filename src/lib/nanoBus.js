@@ -9,12 +9,12 @@ define([], function () {
         processQueue() {
             let processing = this.queue;
             this.queue = [];
-            processing.forEach(function (message) {
+            processing.forEach((message) => {
                 var receivers = this.messageReceivers[message.id];
                 if (!receivers) {
                     return;
                 }
-                receivers.forEach(function (receiver) {
+                receivers.forEach((receiver) => {
                     try {
                         receiver(message.payload);
                     } catch (ex) {
@@ -29,7 +29,7 @@ define([], function () {
                 return;
             }
             // TODO: convert to use animation frames...
-            window.setTimeout(function () {
+            window.setTimeout(() => {
                 this.processQueue();
                 // just in case any new messages crept in.
                 // if (this.queue.length > 0) {
