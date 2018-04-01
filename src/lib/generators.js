@@ -75,6 +75,33 @@ define([], function () {
         return result;
     }
 
+    function koIfLet(lets, markup) {
+        let valueExpressions = [];
+        let letExpression = '{' + Object.keys(lets).map((key) => {
+            // use " for keys to be as generic as possible
+            // the value is raw, though, since it may be a 
+            // vm reference or a literal.
+            valueExpressions.push(lets[key]);
+            return  '"' + key + '":' + lets[key];
+        })
+            .join(', ') + '}';
+        let ifExpression = '( ' + valueExpressions.map((expr) => {
+            return '(' + expr + ')';
+        }).join(' && ') + ' )';
+
+        let result = [
+
+            '<!-- ko if: ' + ifExpression + ' -->',
+            '<!-- ko let: ' + letExpression + '-->',
+            markup,
+            '<!-- /ko -->',
+            '<!-- /ko -->'
+        ];
+        // console.log('result', result);
+        // return markup;
+        return result;
+    }
+
     function koWith(identifier, markup) {
         return [
             '<!-- ko with: ' + identifier + '-->',
@@ -99,14 +126,33 @@ define([], function () {
         ];
     }
 
+    function koText(binding) {
+        return [
+            '<!-- ko text: ' + binding + ' -->',
+            '<!-- /ko -->'
+        ];
+    }
+
     return {
         koIf,
+        if: koIf,
         koIfnot,
+        ifnot: koIfnot,
         koPlural,
+        plural: koPlural,
         koForeach,
+        foreach: koForeach,
         koForeachAs,
+        foreachAs: koForeachAs,
         koLet,
+        let: koLet,
         koWith,
-        koSwitch
+        with: koWith,
+        koSwitch,
+        switch: koSwitch,
+        koIfLet,
+        ifLet: koIfLet,
+        koText,
+        text: koText
     };
 });
