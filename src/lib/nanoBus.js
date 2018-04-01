@@ -1,16 +1,23 @@
 define([], function () {
+
+    const READY = Symbol();
+    const STOPPED = Symbol();
+    const SCHEDULED = Symbol();
+
     class NanoBus {
         constructor() {
             this.queue = [];
             this.runInterval = 0;
             this.messageReceivers = {};
+            
+            this.state = READY;
         }
 
         processQueue() {
             let processing = this.queue;
             this.queue = [];
             processing.forEach((message) => {
-                var receivers = this.messageReceivers[message.id];
+                let receivers = this.messageReceivers[message.id];
                 if (!receivers) {
                     return;
                 }
@@ -25,20 +32,30 @@ define([], function () {
         }
 
         run() {
+            if (this.state === SCHEDULED) {
+                return;
+            }
             if (this.queue.length === 0) {
                 return;
             }
-            // TODO: convert to use animation frames...
-            window.setTimeout(() => {
+            window.requestAnimationFrame(() => {
+                if (this.state === STOPPED) {
+                    return;
+                }
+                this.state = READY;
                 this.processQueue();
                 // just in case any new messages crept in.
-                // if (this.queue.length > 0) {
-                //     this.run();
-                // }
-            }, this.runInterval);
+                if (this.queue.length > 0) {
+                    this.run();
+                }
+            });
+            this.state = SCHEDULED;
         }
 
         send(id, payload) {
+            if (this.state === STOPPED) {
+                return;
+            }
             this.queue.push({
                 id: id,
                 payload: payload
@@ -53,6 +70,10 @@ define([], function () {
             this.messageReceivers[id].push(handler);
         }
 
+        stop() {
+            this.queue = [];
+            this.state = STOPPED;
+        }
     }
 
     return NanoBus;
