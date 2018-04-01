@@ -215,22 +215,24 @@ define([
             },
             panelin: {
                 css: {
-                    animationDuration: '0.5s',
-                    animationName: 'slidein',
+                    animationDuration: '0.3s',
+                    animationName: 'fadein',
                     animationIterationCount: '1',
                     animationDirection: 'normal',
+                    opacity: '1',
                     left: '0'
                 }
             },
             panelout: {
                 css: {
-                    animationDuration: '0.5s',
-                    animationName: 'slideout',
+                    animationDuration: '0.3s',
+                    animationName: 'fadeout',
                     animationIterationCount: '1',
                     animationDirection: 'normal',
+                    opacity: '0',
                     left: '-100%'
                 }
-            },
+            },           
             miniButton: {
                 css: {
                     padding: '2px',
@@ -265,6 +267,24 @@ define([
                     },
                     to: {
                         left: '-100%'
+                    }
+                },
+                fadein: {
+                    from: {
+                        opacity: '0'
+                    },
+                    to: {
+                        opacity: '1'
+                    }
+                },
+                fadeout: {
+                    from: {
+                        opacity: '1',
+                        left:'0'
+                    },
+                    to: {
+                        opacity: '0',
+                        left:'0'
                     }
                 }
             }
