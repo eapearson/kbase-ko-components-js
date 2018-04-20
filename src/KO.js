@@ -321,6 +321,13 @@ define([
         }
     }
 
+    ko.bindingHandlers.focus = {
+        init: function (element, valueAccessor) {
+            let focusser = valueAccessor().focusser;
+            focusser.setElement(element);
+        }
+    };
+
     ko.bindingHandlers.typedText = {
         update: function (element, valueAccessor) {
             var value = valueAccessor();
